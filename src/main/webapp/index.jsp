@@ -432,16 +432,7 @@
                   <a class="nav-link" href="contact.jsp">Contact Us</a>
                 </li>
               </ul>
-              <div class="dropdown">
-                  <a class="dropdown-toggle chocolate-pulse" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="login.jsp">Login</a>
-                    <a class="dropdown-item" href="register.jsp">Register</a>
-                  </div>
-                  
-                </div>
+              
               <div class="quote_btn-container">
                 <!-- <form class="form-inline">
               

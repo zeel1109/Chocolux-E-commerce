@@ -460,14 +460,6 @@
                 <i class="fas fa-users"></i>
                 Customers
             </a>
-            <!-- <a href="settings.html" class="menu-item">
-                <i class="fas fa-cog"></i>
-                Settings
-            </a>
-            <a href="logout.html" class="menu-item">
-                <i class="fas fa-sign-out-alt"></i>
-                Logout
-            </a> -->
         </div>
     </div>
 
@@ -660,7 +652,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+  <!--   <script>
         // Image Preview
         document.getElementById('productImage').addEventListener('change', function(e) {
             if (e.target.files && e.target.files[0]) {
@@ -683,6 +675,6 @@
         // Update Add Product button to open modal
         document.querySelector('.btn-add-product').setAttribute('data-bs-toggle', 'modal');
         document.querySelector('.btn-add-product').setAttribute('data-bs-target', '#addProductModal');
-    </script>
+    </script> -->
 </body>
 </html> 

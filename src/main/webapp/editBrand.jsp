@@ -1,6 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="Database.jsp" %>
+
+<%
+    int bid = Integer.parseInt(request.getParameter("bid"));
+    String bname = "";
+
+    PreparedStatement pst = conn.prepareStatement("SELECT * FROM brand WHERE bid = ?");
+    pst.setInt(1, bid);
+    ResultSet rs = pst.executeQuery();
+
+    if (rs.next()) {
+        bname = rs.getString("bname");
+    }
+
+    // Update logic
+    if (request.getParameter("update") != null) {
+        String updatedName = request.getParameter("bname");
+        PreparedStatement updatePst = conn.prepareStatement("UPDATE brand SET bname = ? WHERE bid = ?");
+        updatePst.setString(1, updatedName);
+        updatePst.setInt(2, bid);
+        updatePst.executeUpdate();
+        response.sendRedirect("add-brand.jsp");
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -262,221 +285,21 @@
         <!-- Add Brand Card -->
         <div class="card">
             <div class="card-header">
-                <h4 class="mb-0">Add New Brand</h4>
+                <h4 class="mb-0">Update New Brand</h4>
             </div>
             <div class="card-body">
                 <form id="brandForm" method="post">
                     <div class="form-group">
                         <label for="brandName">Brand Name</label>
-                        <input type="text" name="bname" class="form-control" id="brandName" placeholder="Enter brand name">
+                        <input type="text" name="bname" value="<%= bname %>" class="form-control" id="brandName" placeholder="Enter brand name">
                     </div>
                     <div class="text-right mt-4">
-                        <button type="button" class="btn btn-light mr-2">Cancel</button>
-                        <button type="submit" name="insert" class="btn btn-primary">Add Brand</button>
+                        <a href="add-brand.jsp" class="btn btn-light mr-2">Cancel</a>
+                        <button type="submit" name="update" class="btn btn-primary">Update Brand</button>
                     </div>
                 </form>
             </div>
         </div>
-
-		<%
-    if (request.getParameter("insert") != null) {
-        String bname = request.getParameter("bname");
-
-        PreparedStatement pst = conn.prepareStatement("INSERT INTO brand(bname) VALUES(?)");
-        pst.setString(1, bname);
-        pst.executeUpdate();
-        response.sendRedirect("add-brand.jsp");
-    }
-
-    // Delete logic
-    if (request.getParameter("delete") != null) {
-        int bid = Integer.parseInt(request.getParameter("delete"));
-        PreparedStatement pst = conn.prepareStatement("DELETE FROM brand WHERE bid = ?");
-        pst.setInt(1, bid);
-        pst.executeUpdate();
-        response.sendRedirect("add-brand.jsp");
-    }
-%>
-		
-        <!-- Brands List Card -->
-        <div class="card">
-            <div class="card-header">
-                <h4 class="mb-0">Brands List</h4>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Brand Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%
-    Statement st = conn.createStatement();
-    ResultSet rs = st.executeQuery("SELECT * FROM brand");
-
-    while (rs.next()) {
-%>
-    <tr>
-        <td><%= rs.getInt("bid") %></td>
-        <td><%= rs.getString("bname") %></td>
-        <td>
-            <a href="editBrand.jsp?bid=<%= rs.getInt("bid") %>" class="btn btn-primary btn-sm">Edit</a>
-            <a href="add-brand.jsp?delete=<%= rs.getInt("bid") %>" class="btn btn-danger btn-sm" onclick="return confirm('Delete this brand?')">Delete</a>
-        </td>
-    </tr>
-<%
-    }
-    conn.close();
-%>
-    </tbody>
-</table>
-                </div>
-            </div>
         </div>
-    </div>
-
-    <!-- Edit Modal -->
-<!--     <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Brand</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm">
-                        <div class="form-group">
-                            <label for="editBrandName">Brand Name</label>
-                            <input type="text" class="form-control" id="editBrandName" placeholder="Enter brand name">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Save Changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
- -->
-    <!-- Delete Modal -->
-    <!-- <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Delete Brand</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this brand? This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!--     <script>
- // Load brands on page load
-    // Fetch brands on page load
-    function loadBrands() {
-        fetch('brandHandler.jsp?action=fetch')
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.querySelector('tbody');
-            tbody.innerHTML = '';
-            data.forEach(brand => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${brand.bid}</td>
-                        <td>${brand.bname}</td>
-                        <td class="action-buttons">
-                            <button class="btn btn-sm btn-primary" onclick="editBrand(${brand.bid}, '${brand.bname}')">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteBrand(${brand.bid})">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        });
-    }
-
-    loadBrands(); // Call on page load
-
-    // Insert Brand
-    document.getElementById('brandForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const brandName = document.getElementById('brandName').value;
-        if (brandName.trim() === '') {
-            alert('Please enter a brand name');
-            return;
-        }
-
-        fetch('brandHandler.jsp?action=insert&bname=' + encodeURIComponent(brandName))
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert('Brand added!');
-                document.getElementById('brandName').value = '';
-                loadBrands();
-            }
-        });
-    });
-
-    // Delete Brand
-    function deleteBrand(bid) {
-        if (confirm("Are you sure you want to delete this brand?")) {
-            fetch('brandHandler.jsp?action=delete&bid=' + bid)
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert('Brand deleted!');
-                    loadBrands();
-                }
-            });
-        }
-    }
-
-    // Edit brand - populate modal
-    function editBrand(bid, bname) {
-        document.getElementById('editBrandName').value = bname;
-        document.getElementById('editModal').setAttribute('data-bid', bid);
-        new bootstrap.Modal(document.getElementById('editModal')).show();
-    }
-
-    // Save changes after editing
-    document.querySelector('#editModal .btn-primary').addEventListener('click', function() {
-        const newBname = document.getElementById('editBrandName').value;
-        const bid = document.getElementById('editModal').getAttribute('data-bid');
-
-        if (newBname.trim() === '') {
-            alert('Please enter a brand name');
-            return;
-        }
-
-        fetch('brandHandler.jsp?action=update&bid=' + bid + '&bname=' + encodeURIComponent(newBname))
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert('Brand updated!');
-                bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-                loadBrands();
-            }
-        });
-    });
-</script> -->
-
 </body>
-</html> 
+</html>
