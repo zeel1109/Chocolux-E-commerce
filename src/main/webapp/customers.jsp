@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -452,83 +454,55 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Customer</th>
-                            <th>Phone</th>
-                            <th>Orders</th>
-                            <th>Total Spent</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                             <th>ID</th>
+                    		<th>First Name</th>
+                   			<th>Last Name</th>
+                    		<th>Email</th>
+                    		<th>Contact</th>
+                    		<th>Password</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="customer-info">
-                                    <img src="https://via.placeholder.com/40" alt="Customer" class="customer-avatar">
-                                    <div class="customer-details">
-                                        <div class="customer-name">John Doe</div>
-                                        <div class="customer-email">john.doe@example.com</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>+1 234 567 8900</td>
-                            <td>15</td>
-                            <td>$1,249.99</td>
-                            <td><span class="status-badge status-active">Active</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-action btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="customer-info">
-                                    <img src="https://via.placeholder.com/40" alt="Customer" class="customer-avatar">
-                                    <div class="customer-details">
-                                        <div class="customer-name">Jane Smith</div>
-                                        <div class="customer-email">jane.smith@example.com</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>+1 987 654 3210</td>
-                            <td>8</td>
-                            <td>$849.99</td>
-                            <td><span class="status-badge status-active">Active</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-action btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="customer-info">
-                                    <img src="https://via.placeholder.com/40" alt="Customer" class="customer-avatar">
-                                    <div class="customer-details">
-                                        <div class="customer-name">Mike Johnson</div>
-                                        <div class="customer-email">mike.johnson@example.com</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>+1 555 123 4567</td>
-                            <td>3</td>
-                            <td>$299.99</td>
-                            <td><span class="status-badge status-inactive">Inactive</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-action btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                     <tbody>
+                 <%
+        // DB connection
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chocolate", "root", "rootroot");
+            stmt = conn.createStatement();
+            String query = "SELECT * FROM register";
+            rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String fname = rs.getString("fname");
+                String lname = rs.getString("lname");
+                String email = rs.getString("email");
+                String contact = rs.getString("contact");
+                String password = rs.getString("password");
+    %>
+        <tr>
+            <td><%= id %></td>
+            <td><%= fname %></td>
+            <td><%= lname %></td>
+            <td><%= email %></td>
+            <td><%= contact %></td>
+            <td><%= password %></td>
+        </tr>
+    <%
+            }
+        } catch (Exception e) {
+            out.println("Error: " + e.getMessage());
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        }
+    %>
+    </tbody>
+</table>
             </div>
             
             <!-- Pagination -->

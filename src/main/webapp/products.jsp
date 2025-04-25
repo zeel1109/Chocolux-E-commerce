@@ -1,18 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, java.util.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products Management - ChocoLux</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <style>
+     <style>
         :root {
             --primary-color: #5C4033;
             --secondary-color: #8B4513;
@@ -431,34 +428,44 @@
             transform: translateY(-2px);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-    </style>
-</head>
+    </style></head>
 <body>
+<% 
+String success = request.getParameter("success");
+String error = request.getParameter("error");
+if (success != null) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } 
+if (error != null) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
             <h3 style="font-family: 'Raleway', sans-serif;">CHOCOLUX</h3>
         </div>
         <div class="sidebar-menu">
-            <a href="admin.jsp" class="menu-item">
-                <i class="fas fa-chart-pie"></i>
-                Dashboard
+            <a href="dashboard.html" class="menu-item">
+                <i class="fas fa-chart-pie"></i> Dashboard
             </a>
-            <a href="add-brand.jsp" class="menu-item ">
-                <i class="fas fa-trademark"></i>
-                Brands
+            <a href="add-brand.html" class="menu-item">
+                <i class="fas fa-trademark"></i> Brands
             </a>
             <a href="products.jsp" class="menu-item active">
-                <i class="fas fa-box"></i>
-                Products
+                <i class="fas fa-box"></i> Products
             </a>
-            <a href="orders.jsp" class="menu-item">
-                <i class="fas fa-shopping-cart"></i>
-                Orders
+            <a href="orders.html" class="menu-item">
+                <i class="fas fa-shopping-cart"></i> Orders
             </a>
-            <a href="customers.jsp" class="menu-item">
-                <i class="fas fa-users"></i>
-                Customers
+            <a href="customers.html" class="menu-item">
+                <i class="fas fa-users"></i> Customers
             </a>
         </div>
     </div>
@@ -467,94 +474,157 @@
     <div class="main-content">
         <h1 class="page-title">Products Management</h1>
         
-        <!-- Header Actions -->
-        <div class="header-actions">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search products...">
-            </div>
-            <button class="btn btn-add-product">
-                <i class="fas fa-plus me-2"></i>Add New Product
-            </button>
+        <%
+        // Get all brands from DB
+        List<String[]> brands = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chocolate", "root", "rootroot");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT bid, bname FROM brand");
+            while (rs.next()) {
+                brands.add(new String[]{rs.getString("bid"), rs.getString("bname")});
+            }
+            rs.close();
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        %>
+
+        <!-- Add Product Form -->
+        <div class="products-card mb-4">
+            <h4 class="mb-4">Add New Product</h4>
+            <form id="productForm" class="row g-3" method="post" action="AddProductServlet" enctype="multipart/form-data">
+                <div class="col-md-6">
+                    <label for="productName" class="form-label">Product Name</label>
+                    <input type="text" class="form-control" id="productName" name="pname" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="productBrand" class="form-label">Brand</label>
+                    <select class="form-select" id="productBrand" name="bid" required>
+                        <option value="">Select Brand</option>
+                        <% for (String[] brand : brands) { %>
+                            <option value="<%= brand[0] %>"><%= brand[1] %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="productPrice" class="form-label">Price</label>
+                    <input type="number" step="0.01" class="form-control" id="productPrice" name="price" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="productStock" class="form-label">Stock</label>
+                    <input type="number" class="form-control" id="productStock" name="quantity" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="productWeight" class="form-label">Weight</label>
+                    <input type="text" class="form-control" id="productWeight" name="weight">
+                </div>
+                <div class="col-md-6">
+                    <label for="productImage" class="form-label">Product Image</label>
+                    <input type="file" class="form-control" id="productImage" name="image_path" accept="image/*">
+                    <div class="image-preview mt-2" id="imagePreview">
+                        <i class="fas fa-image"></i>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label for="productDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="productDescription" name="description" rows="3"></textarea>
+                </div>
+                <div class="col-12 form-check">
+                    <input type="checkbox" class="form-check-input" id="isActive" name="is_active" checked>
+                    <label class="form-check-label" for="isActive">Active</label>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-add-product">
+                        <i class="fas fa-plus me-2"></i>Add Product
+                    </button>
+                </div>
+            </form>
         </div>
-        
+
         <!-- Products Table -->
         <div class="products-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4>Product List</h4>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Search products..." id="searchInput">
+                </div>
+            </div>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table" id="productsTable">
                     <thead>
                         <tr>
-                            <th>Product</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Brand</th>
+                            <th>Description</th>
                             <th>Price</th>
-                            <th>Stock</th>
-                            <th>Category</th>
+                            <th>Weight</th>
+                            <th>Quantity</th>
+                            <th>Image</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <%
+                        Connection conn = null;
+                        Statement stmt = null;
+                        ResultSet rs = null;
+                        try {
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+                            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chocolate", "root", "rootroot");
+                            stmt = conn.createStatement();
+                            rs = stmt.executeQuery("SELECT p.*, b.bname FROM product p LEFT JOIN brand b ON p.bid = b.bid");
+                            while(rs.next()) {
+                        %>
                         <tr>
+                            <td><%= rs.getInt("pid") %></td>
+                            <td><%= rs.getString("pname") %></td>
+                            <td><%= rs.getString("bname") != null ? rs.getString("bname") : "N/A" %></td>
+                            <td><%= rs.getString("description") %></td>
+                            <td>$<%= String.format("%.2f", rs.getDouble("price")) %></td>
+                            <td><%= rs.getString("weight") %></td>
+                            <td><%= rs.getInt("quantity") %></td>
                             <td>
-                                <div class="product-info">
-                                    <img src="https://via.placeholder.com/60" alt="Product" class="product-image">
-                                    <div>
-                                        <div class="product-name">Dark Chocolate Truffles</div>
-                                        <div class="product-category">Truffles</div>
-                                    </div>
-                                </div>
+                                <% if(rs.getString("image_path") != null) { %>
+                                    <img src="<%= rs.getString("image_path") %>" width="50" class="product-image">
+                                <% } else { %>
+                                    No Image
+                                <% } %>
                             </td>
-                            <td class="product-price">&#8377;24.99</td>
-                            <td><span class="status-badge status-in-stock">In Stock</span></td>
-                            <td>Premium</td>
+                            <td>
+                                <span class="status-badge <%= rs.getInt("is_active") == 1 ? "status-in-stock" : "status-out-of-stock" %>">
+                                    <%= rs.getInt("is_active") == 1 ? "Active" : "Inactive" %>
+                                </span>
+                            </td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="btn btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-action btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                    <a href="editProduct.jsp?pid=<%= rs.getInt("pid") %>" class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="DeleteProductServlet?pid=<%= rs.getInt("pid") %>" 
+                                       class="btn-action btn-delete" 
+                                       onclick="return confirm('Are you sure you want to delete this product?')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="product-info">
-                                    <img src="https://via.placeholder.com/60" alt="Product" class="product-image">
-                                    <div>
-                                        <div class="product-name">Milk Chocolate Bar</div>
-                                        <div class="product-category">Bars</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="product-price">&#8377;12.99</td>
-                            <td><span class="status-badge status-low-stock">Low Stock</span></td>
-                            <td>Classic</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-action btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-info">
-                                    <img src="https://via.placeholder.com/60" alt="Product" class="product-image">
-                                    <div>
-                                        <div class="product-name">White Chocolate Pralines</div>
-                                        <div class="product-category">Pralines</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="product-price">&#8377;18.99</td>
-                            <td><span class="status-badge status-out-of-stock">Out of Stock</span></td>
-                            <td>Luxury</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-action btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
+                        <%
+                            }
+                        } catch (Exception e) {
+                            out.println("<tr><td colspan='10' class='text-danger'>Error loading products: " + e.getMessage() + "</td></tr>");
+                        } finally {
+                            if (rs != null) rs.close();
+                            if (stmt != null) stmt.close();
+                            if (conn != null) conn.close();
+                        }
+                        %>
                     </tbody>
                 </table>
             </div>
@@ -576,105 +646,33 @@
         </div>
     </div>
 
-    <!-- Add Product Modal -->
-    <div class="modal fade" id="addProductModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add New Product</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addProductForm">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="mb-3">
-                                    <label class="form-label">Product Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter product name">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" rows="3" placeholder="Enter product description"></textarea>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Price: &#8377;</label>
-                                            <input type="number" class="form-control" placeholder="0.00" step="0.01">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Stock Quantity</label>
-                                            <input type="number" class="form-control" placeholder="0">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Brands</label>
-                                    <div>
-                                        <span class="category-badge active">Ferrero Rocher</span>
-                                        <span class="category-badge">Hershey's</span>
-                                        <span class="category-badge">Toblerone</span>
-                                        <span class="category-badge">Cadbury</span>
-                                        <span class="category-badge">KitKat</span>
-                                        <span class="category-badge">Milka</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Product Image</label>
-                                    <div class="image-preview" onclick="document.getElementById('productImage').click()">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                    </div>
-                                    <input type="file" id="productImage" class="d-none" accept="image/*">
-                                </div>
-                                <!-- <div class="mb-3">
-                                    <label class="form-label">SKU</label>
-                                    <input type="text" class="form-control" placeholder="Enter SKU">
-                                </div> -->
-                                <div class="mb-3">
-                                    <label class="form-label">Weight (g)</label>
-                                    <input type="number" class="form-control" placeholder="0">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-modal" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-modal btn-save">Save Product</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!--   <script>
+    <script>
         // Image Preview
         document.getElementById('productImage').addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            if (file) {
                 const reader = new FileReader();
+                const preview = document.getElementById('imagePreview');
+                
                 reader.onload = function(e) {
-                    document.querySelector('.image-preview').style.backgroundImage = `url(${e.target.result})`;
-                    document.querySelector('.image-preview i').style.display = 'none';
+                    preview.style.backgroundImage = `url(${e.target.result})`;
+                    preview.innerHTML = '';
                 }
-                reader.readAsDataURL(e.target.files[0]);
+                reader.readAsDataURL(file);
             }
         });
 
-        // Category Selection
-        document.querySelectorAll('.category-badge').forEach(badge => {
-            badge.addEventListener('click', function() {
-                this.classList.toggle('active');
+        // Search Functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#productsTable tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
         });
-
-        // Update Add Product button to open modal
-        document.querySelector('.btn-add-product').setAttribute('data-bs-toggle', 'modal');
-        document.querySelector('.btn-add-product').setAttribute('data-bs-target', '#addProductModal');
-    </script> -->
+    </script>
 </body>
-</html> 
+</html>
