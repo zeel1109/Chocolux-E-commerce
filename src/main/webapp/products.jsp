@@ -452,19 +452,19 @@ if (error != null) { %>
             <h3 style="font-family: 'Raleway', sans-serif;">CHOCOLUX</h3>
         </div>
         <div class="sidebar-menu">
-            <a href="dashboard.html" class="menu-item">
+            <a href="admin.jsp" class="menu-item">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
-            <a href="add-brand.html" class="menu-item">
+            <a href="add-brand.jsp" class="menu-item">
                 <i class="fas fa-trademark"></i> Brands
             </a>
             <a href="products.jsp" class="menu-item active">
                 <i class="fas fa-box"></i> Products
             </a>
-            <a href="orders.html" class="menu-item">
+            <a href="orders.jsp" class="menu-item">
                 <i class="fas fa-shopping-cart"></i> Orders
             </a>
-            <a href="customers.html" class="menu-item">
+            <a href="customers.jsp" class="menu-item">
                 <i class="fas fa-users"></i> Customers
             </a>
         </div>
@@ -607,11 +607,11 @@ if (error != null) { %>
                                     <a href="editProduct.jsp?pid=<%= rs.getInt("pid") %>" class="btn-action btn-edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="DeleteProductServlet?pid=<%= rs.getInt("pid") %>" 
-                                       class="btn-action btn-delete" 
-                                       onclick="return confirm('Are you sure you want to delete this product?')">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                   <a href="<%= request.getContextPath() %>/DeleteProductServlet?pid=<%= rs.getInt("pid") %>" 
+   class="btn-action btn-delete" 
+   onclick="return confirm('Are you sure you want to delete this product?')">
+    <i class="fas fa-trash"></i>
+</a>
                                 </div>
                             </td>
                         </tr>

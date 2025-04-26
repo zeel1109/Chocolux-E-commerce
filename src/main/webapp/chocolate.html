@@ -374,11 +374,79 @@
         transform: translateY(0);
       }
     }
+    /* Modal Styles */
+.modal-content {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 25px rgba(139, 69, 19, 0.3);
+  animation: chocolateFadeIn 0.4s ease-out;
+}
+
+.modal-header {
+  background: linear-gradient(to right, #fff5ee, #f8e8d8);
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.modal-body {
+  padding: 20px;
+  background-color: #fff9f0;
+}
+
+.modal-footer {
+  background: linear-gradient(to right, #f8e8d8, #fff5ee);
+}
+
+.btn-primary {
+  background-color: #8b4513;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #6b3410;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(107, 52, 16, 0.3);
+}
+
+.btn-secondary {
+  background-color: #d4a76a;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #b38b5a;
+  transform: translateY(-2px);
+}
   </style>
 
 </head>
 
 <body class="sub_page">
+<!-- Login Required Modal -->
+<div class="modal fade" id="loginRequiredModal" tabindex="-1" role="dialog" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="background-color: #fff5ee; border: 2px solid #8b4513;">
+      <div class="modal-header" style="border-bottom: 1px solid #d4a76a;">
+        <h5 class="modal-title chocolate-color-change" id="loginRequiredModalLabel" style="font-family: 'Montserrat', sans-serif;">Welcome to ChocoLux!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="font-family: 'Poppins', sans-serif;">
+        <p>To continue with your purchase or to add items to your cart, please register or login to your account.</p>
+        <p>Enjoy a seamless chocolate shopping experience with personalized recommendations and order tracking!</p>
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid #d4a76a;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: #8b4513; border: none;">Maybe Later</button>
+        <a href="register.jsp" class="btn btn-primary" style="background-color: #6b3410; border: none;">Register</a>
+        <a href="login.jsp" class="btn btn-primary" style="background-color: #4a2c2a; border: none;">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div class="main_body_content">
 
@@ -454,7 +522,7 @@
 
     <!-- chocolate section -->
 
-    <section class="chocolate_section" id="chocolate">
+   <section class="chocolate_section" id="chocolate">
       <div class="container">
         <div class="heading_container chocolate-fade-in" data-aos="fade-up">
           <h2>
@@ -476,7 +544,7 @@
                 farrero Rocher <span>chocolate</span>
               </h6>
               <h5>
-                &#8377;80
+               &#8377;180
               </h5>
               <a href="" class="chocolate-bounce">
                 BUY NOW
@@ -492,7 +560,7 @@
                 Nestle's <span>Kitkat</span>
               </h6>
               <h5>
-                &#8377;20
+               &#8377;20
               </h5>
               <a href="" class="chocolate-bounce">
                 BUY NOW
@@ -508,7 +576,7 @@
                 Cadbury Dairy Milk <span>Silk Oreo</span>
               </h6>
               <h5>
-                &#8377;100
+               &#8377;100
               </h5>
               <a href="" class="chocolate-bounce">
                 BUY NOW
@@ -524,7 +592,7 @@
                 Hershey's <span>chocolate</span>
               </h6>
               <h5>
-                &#8377;60
+                &#8377;70
               </h5>
               <a href="">
                 BUY NOW
@@ -540,7 +608,7 @@
                 Milka <span>chocolate</span>
               </h6>
               <h5>
-                &#8377;50
+                &#8377;120
               </h5>
               <a href="">
                 BUY NOW
@@ -556,7 +624,7 @@
                 Toblerone <span>chocolate</span>
               </h6>
               <h5>
-                &#8377;75
+                &#8377;250
               </h5>
               <a href="">
                 BUY NOW
@@ -566,7 +634,6 @@
         </div>
       </div>
     </section>
-
     <!-- end chocolate section -->
 
     <!-- info section -->
@@ -739,7 +806,36 @@
         }
       });
     });
+   
+    $(document).ready(function() {
+      // Add click handler for all Buy Now buttons
+      $('a:contains("BUY NOW"), a:contains("Buy Now"), a:contains("Add to Cart"), a:contains("View Product")').on('click', function(e) {
+        e.preventDefault(); // Prevent default action
+        
+        // Show the modal
+        $('#loginRequiredModal').modal('show');
+        
+        // Optional: Add chocolate-themed animation to modal when it shows
+        $('#loginRequiredModal').on('shown.bs.modal', function () {
+          $(this).find('.modal-content').addClass('chocolate-bounce');
+          setTimeout(function() {
+            $('#loginRequiredModal').find('.modal-content').removeClass('chocolate-bounce');
+          }, 1000);
+        });
+      });
+      
+      // Update cart badge count (you can modify this based on your actual cart logic)
+      function updateCartBadge() {
+        // This is just a placeholder - replace with your actual cart count logic
+        let cartCount = localStorage.getItem('cartCount') || 0;
+        $('.cart-badge').text(cartCount);
+      }
+      
+      // Initialize cart badge
+      updateCartBadge();
+    });
   </script>
+
 
 </body>
 

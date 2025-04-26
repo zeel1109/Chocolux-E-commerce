@@ -627,18 +627,39 @@
                   <a class="nav-link chocolate-slide-in delay-300" href="chocolate.jsp">Chocolates</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle chocolate-slide-in delay-400" href="#" id="shopDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Shop All
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="shopDropdown" style="color: black;">
-                    <a class="dropdown-item" href="ferrero-rocher.jsp" style="color: black;">Ferrero Rocher</a>
-                    <a class="dropdown-item" href="hersheys.jsp">Hershey's</a>
-                    <a class="dropdown-item" href="toblerone.jsp">Toblerone</a>
-                    <a class="dropdown-item" href="cadbury.jsp">Cadbury</a>
-                    <a class="dropdown-item" href="kitkat.jsp">KitKat</a>
-                    <a class="dropdown-item" href="milka.jsp">Milka</a>
-                  </div>
-                </li>
+  <a class="nav-link dropdown-toggle chocolate-slide-in delay-400" href="#" id="shopDropdown" 
+     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Shop All
+  </a>
+  <div class="dropdown-menu" aria-labelledby="shopDropdown" style="color: black;">
+    <%@ page import="java.sql.*" %>
+    <%
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection con = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/chocolate","root","rootroot");
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT bname FROM brand");
+        while(rs.next()) {
+            String brandName = rs.getString("bname");
+            String brandPage = brandName.toLowerCase().replace(" ", "-") + ".jsp";
+    %>
+            <a class="dropdown-item" href="<%= brandPage %>" style="color: black;">
+                <%= brandName %>
+            </a>
+    <%
+        }
+        
+        // 5. Close Resources
+        rs.close();
+        stmt.close();
+        con.close();
+    } catch(Exception e) {
+        e.printStackTrace();
+    }
+    %>
+  </div>
+</li>
                 <!-- <li class="nav-item">
                   <a class="nav-link chocolate-slide-in delay-500" href="testimonial.html">Testimonial</a>
                 </li> -->
@@ -647,17 +668,31 @@
                 </li>
               </ul>
               <div class="quote_btn-container">
-                <!-- <form class="form-inline">
-                  <button class="btn my-2 my-sm-0 nav_search-btn chocolate-pulse" type="submit">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                  </button>
-                </form> -->
-                <a class="chocolate-pulse" href="cart.jsp">
+			  <%
+			    String fname = (String) session.getAttribute("fname");
+			    String lname = (String) session.getAttribute("lname");
+			
+			    if (fname != null && lname != null) {
+			  %>
+			    <!-- Show full name -->
+			    <span style="color: brown; font-weight: bold; margin-right: 15px;">
+			      Welcome, <%= fname %> <%= lname %> !!
+			    </span>
+			   
+			       <ul class="navbar-nav ml-auto">
+			     <li class="nav-item">
+                  <a class="nav-link" href="logout.jsp"> Logout</a>
+                </li>
+                </ul>
+                 <a class="chocolate-pulse" href="cart.jsp">
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                   <span class="cart-badge">0</span>
                 </a>
+			  <%
+			    }
+			  %>
+			</div>
               </div>
-            </div>
           </nav>
         </div>
       </header>
@@ -685,7 +720,7 @@
           <div class="col-lg-6" data-aos="fade-left">
             <div class="product-info">
               <h2>Ferrero Rocher</h2>
-              <div class="product-price">$5.00</div>
+              <div class="product-price">&#8377;200.0</div>
               <div class="product-description">
                 <p>Experience the perfect blend of a whole roasted hazelnut, surrounded by a delicate wafer shell filled with hazelnut cream, and covered in milk chocolate and chopped hazelnuts. Ferrero Rocher offers a unique taste and texture that delights the senses.</p>
                 <p>Each piece is individually wrapped in gold foil and placed in a transparent box, making it an elegant gift for any occasion.</p>
@@ -734,7 +769,7 @@
               </div>
               <div class="related-product-info">
                 <h4>Ferrero Tronky</h4>
-                <div class="related-product-price">$4.50</div>
+                <div class="related-product-price">&#8377;180.0</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>
@@ -746,7 +781,7 @@
               </div>
               <div class="related-product-info">
                 <h4>Ferrero Rondnoir</h4>
-                <div class="related-product-price">$25.00</div>
+                <div class="related-product-price">&#8377;220.0</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>
@@ -758,7 +793,7 @@
               </div>
               <div class="related-product-info">
                 <h4>Ferrero Raffaello</h4>
-                <div class="related-product-price">$15.00</div>
+                <div class="related-product-price">&#8377;240.0</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>

@@ -620,10 +620,11 @@
                     <span class="user-role">Administrator</span>
                 </div>
             </div>
-            <a class="top-bar-btn" href="logout.jsp">
-              <!--    <i class="fas fa-sign-out-alt"></i> -->
-                Logout
-            </a>
+           <button class="btn btn-danger top-bar-btn" onclick="window.location.href='logout.jsp'">
+    <i class="fas fa-sign-out-alt"></i> Logout
+</button>
+
+
         </div>
 
         <h1 class="page-title">Dashboard Overview</h1>
@@ -674,7 +675,7 @@
                         <i class="fas fa-dollar-sign"></i>
                         Total Revenue
                     </div>
-                    <h3 class="card-value">$45,678</h3>
+                    <h3 class="card-value">4500</h3>
                     <p class="text-success mb-0">+8% from last month</p>
                 </div>
             </div>
@@ -684,7 +685,7 @@
                         <i class="fas fa-users"></i>
                         Total Customers
                     </div>
-                    <h3 class="card-value">2,459</h3>
+                    <h3 class="card-value">2459</h3>
                     <p class="text-success mb-0">+5% from last month</p>
                 </div>
             </div>
@@ -724,7 +725,7 @@
                                 <tr>
                                     <td>#ORD-001</td>
                                     <td>John Doe</td>
-                                    <td>$129.99</td>
+                                    <td>129.99</td>
                                 </tr>
                                 <tr>
                                     <td>#ORD-002</td>
@@ -883,10 +884,15 @@
                 }
             }
         });
-        document.querySelector('.top-bar-btn').addEventListener('click', function(e) {
+       /* document.querySelector('.top-bar-btn').addEventListener('click', function(e) {
             e.preventDefault(); // THIS will stop it from redirecting!
+        });*/
+       /*  document.querySelectorAll('.top-bar-btn:not([href="logout.jsp"])').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+            });
         });
-
+ */
     </script>
 </body>
 </html> 

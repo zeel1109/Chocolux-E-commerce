@@ -31,7 +31,39 @@
             color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+        .status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.status-active { 
+    background: #d4edda; 
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-active:hover {
+    background: #c3e6cb;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+.status-inactive { 
+    background: #f8d7da; 
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-inactive:hover {
+    background: #f5c6cb;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
         /* Sidebar Styles */
         .sidebar {
             width: var(--sidebar-width);
@@ -365,6 +397,7 @@
                 flex-direction: column;
             }
         }
+        
     </style>
 </head>
 <body>
@@ -393,14 +426,6 @@
                 <i class="fas fa-users"></i>
                 Customers
             </a>
-            <!-- <a href="settings.html" class="menu-item">
-                <i class="fas fa-cog"></i>
-                Settings
-            </a>
-            <a href="logout.html" class="menu-item">
-                <i class="fas fa-sign-out-alt"></i>
-                Logout
-            </a> -->
         </div>
     </div>
 
@@ -415,7 +440,22 @@
                     <i class="fas fa-users"></i>
                 </div>
                 <div class="stat-info">
-                    <h4>2,459</h4>
+                    <%
+                        Connection statsConn = null;
+                        Statement statsStmt = null;
+                        ResultSet statsRs = null;
+                        try {
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+                            statsConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chocolate", "root", "rootroot");
+                            statsStmt = statsConn.createStatement();
+                            ResultSet totalRs = statsStmt.executeQuery("SELECT COUNT(*) AS total FROM register");
+                            if(totalRs.next()) {
+                    %>
+                    <h4><%= totalRs.getInt("total") %></h4>
+                    <%
+                            }
+                            totalRs.close();
+                    %>
                     <p>Total Customers</p>
                 </div>
             </div>
@@ -424,85 +464,113 @@
                     <i class="fas fa-user-check"></i>
                 </div>
                 <div class="stat-info">
-                    <h4>1,892</h4>
+                    <%
+                            // Assuming all registered users are active for this example
+                            // In a real app, you might have an 'active' column in your table
+                            ResultSet activeRs = statsStmt.executeQuery("SELECT COUNT(*) AS active FROM register");
+                            if(activeRs.next()) {
+                    %>
+                    <h4><%= activeRs.getInt("active") %></h4>
+                    <%
+                            }
+                            activeRs.close();
+                    %>
                     <p>Active Customers</p>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon new">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <div class="stat-info">
-                    <h4>156</h4>
-                    <p>New This Month</p>
-                </div>
-            </div>
+        <div class="stat-icon new">
+            <i class="fas fa-at"></i>
         </div>
+        <div class="stat-info">
+            <%
+                    ResultSet domainRs = statsStmt.executeQuery("SELECT SUBSTRING_INDEX(email, '@', -1) AS domain, COUNT(*) AS count FROM register GROUP BY domain ORDER BY count DESC LIMIT 1");
+                    if(domainRs.next()) {
+            %>
+            <h4><%= domainRs.getString("domain") %></h4>
+            <%
+                    }
+                    domainRs.close();
+                } catch (Exception e) {
+                    out.println("Error: " + e.getMessage());
+                } finally {
+                    if (statsRs != null) statsRs.close();
+                    if (statsStmt != null) statsStmt.close();
+                    if (statsConn != null) statsConn.close();
+                }
+            %>
+            <p>Top Email Domain</p>
+        </div>
+    </div>
+</div>
         
         <!-- Header Actions -->
         <div class="header-actions">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search customers...">
+                <input type="text" id="searchInput" placeholder="Search customers..." onkeyup="searchTable()">
             </div>
-            
         </div>
         
         <!-- Customers Table -->
         <div class="customers-card">
             <div class="table-responsive">
-                <table class="table">
+                <table class="table" id="customersTable">
                     <thead>
                         <tr>
-                             <th>ID</th>
-                    		<th>First Name</th>
-                   			<th>Last Name</th>
-                    		<th>Email</th>
-                    		<th>Contact</th>
-                    		<th>Password</th>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
-                     <tbody>
-                 <%
-        // DB connection
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chocolate", "root", "rootroot");
-            stmt = conn.createStatement();
-            String query = "SELECT * FROM register";
-            rs = stmt.executeQuery(query);
+                    <tbody>
+                    <%
+                        Connection conn = null;
+                        Statement stmt = null;
+                        ResultSet rs = null;
+                        try {
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+                            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chocolate", "root", "rootroot");
+                            stmt = conn.createStatement();
+                            String query = "SELECT * FROM register";
+                            rs = stmt.executeQuery(query);
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String fname = rs.getString("fname");
-                String lname = rs.getString("lname");
-                String email = rs.getString("email");
-                String contact = rs.getString("contact");
-                String password = rs.getString("password");
-    %>
-        <tr>
-            <td><%= id %></td>
-            <td><%= fname %></td>
-            <td><%= lname %></td>
-            <td><%= email %></td>
-            <td><%= contact %></td>
-            <td><%= password %></td>
-        </tr>
-    <%
-            }
-        } catch (Exception e) {
-            out.println("Error: " + e.getMessage());
-        } finally {
-            if (rs != null) rs.close();
-            if (stmt != null) stmt.close();
-            if (conn != null) conn.close();
-        }
-    %>
-    </tbody>
-</table>
+                            while (rs.next()) {
+                                int id = rs.getInt("id");
+                                String fname = rs.getString("fname");
+                                String lname = rs.getString("lname");
+                                String email = rs.getString("email");
+                                String contact = rs.getString("contact");
+                    %>
+                        <tr>
+                            <td><%= id %></td>
+                            <td><%= fname %></td>
+                            <td><%= lname %></td>
+                            <td><%= email %></td>
+                            <td><%= contact %></td>
+                            <td>
+    <span class="status-badge status-active" 
+          title="Click to change status"
+          onclick="toggleStatus(this)">
+        Active
+    </span>
+</td>
+                        </tr>
+                    <%
+                            }
+                        } catch (Exception e) {
+                            out.println("Error: " + e.getMessage());
+                        } finally {
+                            if (rs != null) rs.close();
+                            if (stmt != null) stmt.close();
+                            if (conn != null) conn.close();
+                        }
+                    %>
+                    </tbody>
+                </table>
             </div>
             
             <!-- Pagination -->
@@ -524,5 +592,50 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Search Functionality -->
+    <script>
+    function toggleStatus(element) {
+        if (element.classList.contains('status-active')) {
+            element.classList.remove('status-active');
+            element.classList.add('status-inactive');
+            element.textContent = 'Inactive';
+            element.title = 'Customer is inactive and cannot place orders';
+            // Here you would add AJAX call to update status in database
+        } else {
+            element.classList.remove('status-inactive');
+            element.classList.add('status-active');
+            element.textContent = 'Active';
+            element.title = 'Customer is active and can place orders';
+            // Here you would add AJAX call to update status in database
+        }
+    }
+        function searchTable() {
+            let input, filter, table, tr, td, i, j, txtValue, found;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("customersTable");
+            tr = table.getElementsByTagName("tr");
+            
+            for (i = 1; i < tr.length; i++) { // Start from 1 to skip header row
+                found = false;
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length - 1; j++) { // Skip the status column
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
-</html> 
+</html>

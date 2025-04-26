@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -8,11 +10,11 @@
   <!-- Mobile Metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <!-- Site Metas -->
-  <meta name="keywords" content="Cadbury, chocolates, Dairy Milk, British chocolate" />
-  <meta name="description" content="Discover the premium Cadbury chocolates collection at ChocoLux" />
+  <meta name="keywords" content="Toblerone, chocolates, Swiss chocolate, honey nougat" />
+  <meta name="description" content="Discover the premium Toblerone chocolates collection at ChocoLux" />
   <meta name="author" content="" />
 
-  <title>Cadbury - ChocoLux</title>
+  <title>Lindt - ChocoLux</title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -347,6 +349,11 @@
       display: block;
       animation: fadeInDown 0.3s ease;
     }
+    .info_section {
+    background-color: #411900;
+    color: #ffffff;
+}
+    
 
     @keyframes fadeInDown {
       from {
@@ -361,7 +368,7 @@
 
     /* Product page specific styles */
     .product-hero {
-      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/Cadbury-affiliate-program.jpg');
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/images-3.jpeg');
       background-size: cover;
       background-position: center;
       height: 400px;
@@ -589,83 +596,11 @@
       align-items: center;
       justify-content: center;
     }
-       .info_section {
-    background-color: #411900;
-    color: #ffffff;
-}
-/* Modal Styles */
-.modal-content {
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 25px rgba(139, 69, 19, 0.3);
-  animation: chocolateFadeIn 0.4s ease-out;
-}
-
-.modal-header {
-  background: linear-gradient(to right, #fff5ee, #f8e8d8);
-}
-
-.modal-title {
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-.modal-body {
-  padding: 20px;
-  background-color: #fff9f0;
-}
-
-.modal-footer {
-  background: linear-gradient(to right, #f8e8d8, #fff5ee);
-}
-
-.btn-primary {
-  background-color: #8b4513;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #6b3410;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(107, 52, 16, 0.3);
-}
-
-.btn-secondary {
-  background-color: #d4a76a;
-  transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-  background-color: #b38b5a;
-  transform: translateY(-2px);
-}
-    
   </style>
 </head>
 
 <body class="sub_page">
-<!-- Login Required Modal -->
-<div class="modal fade" id="loginRequiredModal" tabindex="-1" role="dialog" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content" style="background-color: #fff5ee; border: 2px solid #8b4513;">
-      <div class="modal-header" style="border-bottom: 1px solid #d4a76a;">
-        <h5 class="modal-title chocolate-color-change" id="loginRequiredModalLabel" style="font-family: 'Montserrat', sans-serif;">Welcome to ChocoLux!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="font-family: 'Poppins', sans-serif;">
-        <p>To continue with your purchase or to add items to your cart, please register or login to your account.</p>
-        <p>Enjoy a seamless chocolate shopping experience with personalized recommendations and order tracking!</p>
-      </div>
-      <div class="modal-footer" style="border-top: 1px solid #d4a76a;">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: #8b4513; border: none;">Maybe Later</button>
-        <a href="register.jsp" class="btn btn-primary" style="background-color: #6b3410; border: none;">Register</a>
-        <a href="login.jsp" class="btn btn-primary" style="background-color: #4a2c2a; border: none;">Login</a>
-      </div>
-    </div>
-  </div>
-</div>
+
   <div class="main_body_content">
 
     <div class="hero_area">
@@ -673,7 +608,7 @@
       <header class="header_section">
         <div class="container-fluid">
           <nav class="navbar navbar-expand-lg custom_nav-container ">
-            <a class="navbar-brand chocolate-color-change" href="index.html">
+            <a class="navbar-brand chocolate-color-change" href="index.jsp">
               ChocoLux
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -683,54 +618,81 @@
             <div class="collapse navbar-collapse " id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link chocolate-slide-in delay-100" href="index.html">Home <span class="sr-only">(current)</span></a>
+                  <a class="nav-link chocolate-slide-in delay-100" href="index.jsp">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link chocolate-slide-in delay-200" href="about.html"> About</a>
+                  <a class="nav-link chocolate-slide-in delay-200" href="about.jsp"> About</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link chocolate-slide-in delay-300" href="chocolate.html">Chocolates</a>
+                  <a class="nav-link chocolate-slide-in delay-300" href="chocolate.jsp">Chocolates</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle chocolate-slide-in delay-400" href="#" id="shopDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Shop All
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="shopDropdown" style="color: black;">
-                    <a class="dropdown-item" href="ferrero-rocher.html" style="color: black;">Ferrero Rocher</a>
-                    <a class="dropdown-item" href="hersheys.html">Hershey's</a>
-                    <a class="dropdown-item" href="toblerone.html">Toblerone</a>
-                    <a class="dropdown-item" href="cadbury.html">Cadbury</a>
-                    <a class="dropdown-item" href="kitkat.html">KitKat</a>
-                    <a class="dropdown-item" href="milka.html">Milka</a>
-                  </div>
-                </li>
+  <a class="nav-link dropdown-toggle chocolate-slide-in delay-400" href="#" id="shopDropdown" 
+     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Shop All
+  </a>
+  <div class="dropdown-menu" aria-labelledby="shopDropdown" style="color: black;">
+    <%@ page import="java.sql.*" %>
+    <%
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection con = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/chocolate","root","rootroot");
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT bname FROM brand");
+        while(rs.next()) {
+            String brandName = rs.getString("bname");
+            String brandPage = brandName.toLowerCase().replace(" ", "-") + ".jsp";
+    %>
+            <a class="dropdown-item" href="<%= brandPage %>" style="color: black;">
+                <%= brandName %>
+            </a>
+    <%
+        }
+        
+        // 5. Close Resources
+        rs.close();
+        stmt.close();
+        con.close();
+    } catch(Exception e) {
+        e.printStackTrace();
+    }
+    %>
+  </div>
+</li>
                 <!-- <li class="nav-item">
                   <a class="nav-link chocolate-slide-in delay-500" href="testimonial.html">Testimonial</a>
                 </li> -->
                 <li class="nav-item">
-                  <a class="nav-link chocolate-slide-in delay-500" href="contact.html">Contact Us</a>
+                  <a class="nav-link chocolate-slide-in delay-500" href="contact.jsp">Contact Us</a>
                 </li>
               </ul>
               <div class="quote_btn-container">
-                <form class="form-inline">
-                 <!--  <button class="btn my-2 my-sm-0 nav_search-btn chocolate-pulse" type="submit">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                  </button> -->
-                </form>
-                <div class="dropdown">
-                  <a class="dropdown-toggle chocolate-pulse" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="login.jsp">Login</a>
-                    <a class="dropdown-item" href="register.jsp">Register</a>
-                  </div>
-                <a class="chocolate-pulse" href="cart.html">
+			  <%
+			    String fname = (String) session.getAttribute("fname");
+			    String lname = (String) session.getAttribute("lname");
+			
+			    if (fname != null && lname != null) {
+			  %>
+			    <!-- Show full name -->
+			    <span style="color: brown; font-weight: bold; margin-right: 15px;">
+			      Welcome, <%= fname %> <%= lname %> !!
+			    </span>
+			   
+			       <ul class="navbar-nav ml-auto">
+			     <li class="nav-item">
+                  <a class="nav-link" href="logout.jsp"> Logout</a>
+                </li>
+                </ul>
+                 <a class="chocolate-pulse" href="cart.jsp">
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                   <span class="cart-badge">0</span>
                 </a>
+			  <%
+			    }
+			  %>
+			</div>
               </div>
-            </div>
           </nav>
         </div>
       </header>
@@ -740,29 +702,28 @@
     <!-- product hero section -->
     <section class="product-hero">
       <div class="container">
-        <!-- <h1 data-aos="fade-up">Cadbury</h1> -->
-        <!-- <p data-aos="fade-up" data-aos-delay="200">Discover our premium collection of Cadbury chocolates, the iconic British chocolate brand known for its rich and creamy taste.</p> -->
+        <h1 data-aos="fade-up">Lindit</h1>
+        <p data-aos="fade-up" data-aos-delay="200">Dark and aromatic, each Excellence bar is created from the finest cocoa and the highest quality ingredient.</p>
       </div>
     </section>
     <!-- end product hero section -->
 
-   
     <!-- product details section -->
     <section class="product-details">
       <div class="container">
         <div class="row">
           <div class="col-lg-6" data-aos="fade-right">
             <div class="product-image">
-              <img src="images/cadbury-dairy-milk-chocolate-bar-yd73712s82pgjpg8-yd73712s82pgjpg8.png" alt="Cadbury" class="img-fluid">
+              <img src="images/Toblerone.png" alt="Toblerone" class="img-fluid">
             </div>
           </div>
           <div class="col-lg-6" data-aos="fade-left">
             <div class="product-info">
-              <h2>Cadbury Dairy Milk</h2>
-              <div class="product-price">&#8377;80.0</div>
+              <h2>Lindit</h2>
+              <div class="product-price">&#8377;250.00</div>
               <div class="product-description">
-                <p>Experience the iconic taste of Cadbury Dairy Milk, Britain's favorite chocolate. Made with a unique blend of fresh milk and cocoa, each piece offers a smooth, creamy texture that melts in your mouth.</p>
-                <p>With over 100 years of chocolate-making expertise, Cadbury Dairy Milk has become a symbol of quality and indulgence in the chocolate world.</p>
+                <p>Dark and aromatic, each Excellence bar is created from the finest cocoa and the highest quality ingredient.With rich flavour profiles, a smooth, even texture and silky sheen, these delicately thin bars excite and entice the senses.</p>
+                <p>Lindt & Sprüngli sources its cocoa from origin regions around the globe including Ghana, Côte d'Ivoire, Ecuador, Madagascar, Papua New Guinea, the Dominican Republic, and Peru. Our high-quality standards apply not only to our main ingredient cocoa, but also to other raw materials including hazelnuts and vanilla. </p>
               </div>
               <div class="quantity-selector">
                 <label>Quantity:</label>
@@ -777,9 +738,9 @@
                 <button class="buy-now-btn">Buy Now</button>
               </div>
               <div class="product-meta">
-                <p><span>Brand:</span> Cadbury</p>
-                <p><span>Category:</span> Milk Chocolate</p>
-                <p><span>Weight:</span> 85g</p>
+                <p><span>Brand:</span> Lindit</p>
+                <p><span>Category:</span> Milk Chocolate with Honey and Almond Nougat</p>
+                <p><span>Weight:</span> 100g</p>
                 <p><span>Availability:</span> In Stock</p>
               </div>
             </div>
@@ -794,21 +755,21 @@
       <div class="container">
         <div class="heading_container" data-aos="fade-up">
           <h2>
-            More Cadbury Products
+            More Lindit Products
           </h2>
           <p>
-            Discover our other premium Cadbury chocolate collections
+            Discover our other premium Lindit chocolate collections
           </p>
         </div>
         <div class="row">
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
             <div class="related-product-card">
               <div class="related-product-img">
-                <img src="images/61F7bkodbqL.jpg" alt="Cadbury Fruit & Nut">
+                <img src="images/Toblerone-dark.jpg" alt="Toblerone Dark">
               </div>
               <div class="related-product-info">
-                <h4>Cadbury Silk Oreo</h4>
-                <div class="related-product-price">&#8377;120.0</div>
+                <h4>LinditDark</h4>
+                <div class="related-product-price">&#8377;200</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>
@@ -816,11 +777,11 @@
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
             <div class="related-product-card">
               <div class="related-product-img">
-                <img src="images/Whole-nut.jpg" alt="Cadbury Whole Nut">
+                <img src="images/Toblerone-white.jpg" alt="Toblerone White">
               </div>
               <div class="related-product-info">
-                <h4>Cadbury Whole Nut</h4>
-                <div class="related-product-price">&#8377;160.0</div>
+                <h4>Lindit White</h4>
+                <div class="related-product-price">&#8377;190</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>
@@ -828,11 +789,11 @@
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
             <div class="related-product-card">
               <div class="related-product-img">
-                <img src="images/Cadbury-Celebrations-Assorted-Chocolate-Gift-Pack-64.2g-Pack-of-8-400.jpg" alt="Cadbury Gift Box">
+                <img src="images/Box-Toblerone.jpg" alt="Toblerone Gift Box">
               </div>
               <div class="related-product-info">
-                <h4>Cadbury Gift Box</h4>
-                <div class="related-product-price">&#8377;180.0</div>
+                <h4>Lindit Gift Box</h4>
+                <div class="related-product-price">&#8377;220</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>
@@ -878,19 +839,19 @@
                 Menu
               </h4>
               <div class="info_links_menu">
-                <a href="index.html">
+                <a href="index.jsp">
                   Home
                 </a>
-                <a href="about.html">
+                <a href="about.jsp">
                   About
                 </a>
-                <a href="chocolate.html">
+                <a href="chocolate.jsp">
                   Chocolates
                 </a>
-                <a href="testimonial.html">
+                <a href="testimonial.jsp">
                   Testimonial
                 </a>
-                <a href="contact.html">
+                <a href="contact.jsp">
                   Contact us
                 </a>
               </div>
@@ -1031,46 +992,6 @@
         });
       });
     });
-    $(document).ready(function() {
-  	  // Add click handler for all Buy Now buttons and similar actions
-  	  $('button:contains("BUY NOW"), button:contains("Buy Now"), button:contains("Add to Cart"), a:contains("View Product"), button:contains("Add to Cart")').on('click', function(e) {
-  	    e.preventDefault(); // Prevent default action
-  	    
-  	    // Show the modal
-  	    $('#loginRequiredModal').modal('show');
-  	    
-  	    // Optional: Add chocolate-themed animation to modal when it shows
-  	    $('#loginRequiredModal').on('shown.bs.modal', function () {
-  	      $(this).find('.modal-content').addClass('chocolate-bounce');
-  	      setTimeout(function() {
-  	        $('#loginRequiredModal').find('.modal-content').removeClass('chocolate-bounce');
-  	      }, 1000);
-  	    });
-  	  });
-  	  
-  	  // Update cart badge count (you can modify this based on your actual cart logic)
-  	  function updateCartBadge() {
-  	    let cartCount = localStorage.getItem('cartCount') || 0;
-  	    $('.cart-badge').text(cartCount);
-  	  }
-  	  
-  	  // Initialize cart badge
-  	  updateCartBadge();
-  	  
-  	  // Quantity selector functionality
-  	  $('.quantity-btn').on('click', function() {
-  	    const input = $(this).siblings('.quantity-input');
-  	    let value = parseInt(input.val());
-  	    
-  	    if ($(this).text() === '+') {
-  	      value++;
-  	    } else if ($(this).text() === '-' && value > 1) {
-  	      value--;
-  	    }
-  	    
-  	    input.val(value);
-  	  });
-  	});
   </script>
 
 </body>
