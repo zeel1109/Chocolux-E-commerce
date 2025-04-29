@@ -1,11 +1,9 @@
-import java.io.*;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -21,10 +19,11 @@ import javax.servlet.http.Part;
     maxRequestSize = 1024 * 1024 * 10  // 10 MB
 )
 public class AddProductServlet extends HttpServlet {
-    
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+
+    @Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
-        
+
         // Configure upload directory
         String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
         File uploadDir = new File(uploadPath);
@@ -44,7 +43,7 @@ public class AddProductServlet extends HttpServlet {
         // Parse and validate data
         int bid = 0, quantity = 0, isActive = 0;
         double price = 0.0;
-        
+
         try {
             bid = Integer.parseInt(bidStr);
             price = Double.parseDouble(priceStr);
@@ -61,20 +60,20 @@ public class AddProductServlet extends HttpServlet {
             Part filePart = request.getPart("image_path");
             if (filePart != null && filePart.getSize() > 0) {
                 String fileName = new File(filePart.getSubmittedFileName()).getName();
-                
+
                 // Validate file type
                 if (!fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif)$")) {
                     response.sendRedirect("products.jsp?error=Only image files are allowed (JPG, PNG, GIF)");
                     return;
                 }
-                
+
                 // Generate unique filename
                 String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
                 String fullPath = uploadPath + File.separator + uniqueFileName;
-                
+
                 // Save file
                 filePart.write(fullPath);
-                
+
                 // Store relative path
                 dbImagePath = "uploads/" + uniqueFileName;
             }
@@ -89,16 +88,16 @@ public class AddProductServlet extends HttpServlet {
             // Load driver and establish connection
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/chocolate", 
-                "root", 
+                "jdbc:mysql://localhost:3306/chocolate",
+                "root",
                 "rootroot");
-            
+
             // Start transaction
             con.setAutoCommit(false);
-            
+
             String sql = "INSERT INTO product (pname, bid, description, price, weight, quantity, image_path, is_active) " +
                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            
+
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setString(1, pname);
                 ps.setInt(2, bid);
@@ -110,7 +109,7 @@ public class AddProductServlet extends HttpServlet {
                 ps.setInt(8, isActive);
 
                 int result = ps.executeUpdate();
-                
+
                 if (result > 0) {
                     con.commit();
                     response.sendRedirect("products.jsp?success=Product added successfully");

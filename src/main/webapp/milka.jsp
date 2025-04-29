@@ -724,12 +724,12 @@
         <div class="row">
           <div class="col-lg-6" data-aos="fade-right">
             <div class="product-image">
-              <img src="images/9b739ac8-da43-4562-a7cc-3f04ca18fa30.e0cfc90c91e190da6ae81b030068cc19.webp" alt="KitKat" class="img-fluid">
+              <img src="uploads/1745585164650_milka547.png" alt="Milka" class="img-fluid">
             </div>
           </div>
           <div class="col-lg-6" data-aos="fade-left">
             <div class="product-info">
-              <h2>Milka</h2>
+              <h2>Milka Hazelnut Chocolate bar</h2>
               <div class="product-price">&#8377;130</div>
               <div class="product-description">
                 <p>Indulge in the irresistible creaminess of Milka chocolate, crafted with Alpine milk for a smooth, melt-in-your-mouth experience. Whether you're savoring it alone or sharing with loved ones, Milka is the perfect treat for any moment.</p>
@@ -748,9 +748,9 @@
                 <button class="buy-now-btn">Buy Now</button>
               </div>
               <div class="product-meta">
-                <p><span>Brand:</span> Milka</p>
+                <p><span>Brand:</span> Milka Hazelnut Chocolate bar</p>
                 <p><span>Category:</span> Alpine Milk Chocolate</p>
-                <p><span>Weight:</span> 41.5g</p>
+                <p><span>Weight:</span> 100g</p>
                 <p><span>Availability:</span> In Stock</p>
               </div>
             </div>
@@ -775,10 +775,10 @@
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
             <div class="related-product-card">
               <div class="related-product-img">
-                <img src="images/milka547.png" alt="Milka">
+                <img src="images/9b739ac8-da43-4562-a7cc-3f04ca18fa30.e0cfc90c91e190da6ae81b030068cc19.webp" alt="Milka">
               </div>
               <div class="related-product-info">
-                <h4>Milka Hazelnut Chocolate bar</h4>
+                <h4>Milka</h4>
                 <div class="related-product-price">&#8377;120</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
@@ -958,51 +958,76 @@
   <!-- AOS Animation Library -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Initialize AOS
+    // Initialize AOS first
     AOS.init({
       duration: 1000,
       easing: 'ease-in-out',
       once: false,
       mirror: true
     });
-    
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
 
-    // Quantity selector functionality
+    // Quantity control
     document.addEventListener('DOMContentLoaded', function() {
-      const quantityBtns = document.querySelectorAll('.quantity-btn');
-      quantityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const input = this.parentElement.querySelector('.quantity-input');
-          let value = parseInt(input.value);
-          
-          if (this.textContent === '+') {
-            value++;
-          } else if (this.textContent === '-' && value > 1) {
-            value--;
-          }
-          
-          input.value = value;
+        const minusBtn = document.querySelector('.quantity-control .quantity-btn:first-child');
+        const plusBtn = document.querySelector('.quantity-control .quantity-btn:last-child');
+        const qtyInput = document.querySelector('.quantity-control .quantity-input');
+
+        if (minusBtn && plusBtn && qtyInput) {
+            minusBtn.addEventListener('click', () => {
+                let qty = parseInt(qtyInput.value);
+                if (qty > 1) qtyInput.value = qty - 1;
+            });
+
+            plusBtn.addEventListener('click', () => {
+                let qty = parseInt(qtyInput.value);
+                qtyInput.value = qty + 1;
+            });
+        }
+
+        // Cart functionality
+        $(document).ready(function() {
+            $('.add-to-cart-btn').click(function() {
+                const quantity = parseInt($('.quantity-input').val());
+                
+                $.ajax({
+                    url: 'AddToCartServlet',
+                    type: 'POST',
+                    data: {
+                        pid: 1, // Correct PID for Milka
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        if(response.trim() === 'success') {
+                            alert('Added to cart!');
+                            updateCartBadge();
+                        } else {
+                            alert('Error: ' + response);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                        alert('Failed to add to cart');
+                    }
+                });
+            });
+
+            function updateCartBadge() {
+                $.ajax({
+                    url: 'GetCartCountServlet',
+                    type: 'GET',
+                    success: function(count) {
+                        $('.cart-badge').text(count);
+                    },
+                    error: function() {
+                        console.log('Error updating cart count');
+                    }
+                });
+            }
+            
+            updateCartBadge();
         });
-      });
     });
-  </script>
+</script>
 
 </body>
 

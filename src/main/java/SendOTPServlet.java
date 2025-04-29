@@ -13,7 +13,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,11 +31,13 @@ public class SendOTPServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String email = request.getParameter("email");
@@ -87,7 +88,8 @@ public class SendOTPServlet extends HttpServlet {
             props.put("mail.smtp.port", "587");
 
             Session mailSession = Session.getInstance(props, new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
+                @Override
+				protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(from, password);
                 }
             });

@@ -714,7 +714,7 @@
         <div class="row">
           <div class="col-lg-6" data-aos="fade-right">
             <div class="product-image">
-              <img src="images/Toblerone.png" alt="Toblerone" class="img-fluid">
+              <img src="uploads/1745745160417_Toblerone.png" alt="Toblerone" class="img-fluid">
             </div>
           </div>
           <div class="col-lg-6" data-aos="fade-left">
@@ -948,52 +948,88 @@
   <!-- AOS Animation Library -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Initialize AOS
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: false,
-      mirror: true
-    });
-    
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-
-    // Quantity selector functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const quantityBtns = document.querySelectorAll('.quantity-btn');
-      quantityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const input = this.parentElement.querySelector('.quantity-input');
-          let value = parseInt(input.value);
-          
-          if (this.textContent === '+') {
-            value++;
-          } else if (this.textContent === '-' && value > 1) {
-            value--;
-          }
-          
-          input.value = value;
+    // Initialize AOS first
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: false,
+            mirror: true
         });
-      });
-    });
-  </script>
+    }
 
+    // Quantity control
+    $(document).ready(function() {
+        // Smooth scroll
+        $('a[href^="#"]').on('click', function(e) {
+            e.preventDefault();
+            const target = $(this.getAttribute('href'));
+            if (target.length) {
+                $('html, body').stop().animate({
+                    scrollTop: target.offset().top - 80
+                }, 1000);
+            }
+        });
+
+        // Quantity buttons
+        $('.quantity-btn').on('click', function() {
+            const input = $(this).siblings('.quantity-input');
+            let value = parseInt(input.val());
+            
+            if ($(this).text() === '+') {
+                value++;
+            } else if ($(this).text() === '-' && value > 1) {
+                value--;
+            }
+            
+            input.val(value);
+        });
+
+        // Add to cart
+        $('.add-to-cart-btn').on('click', function() {
+            const quantity = parseInt($('.quantity-input').val());
+            
+            $.ajax({
+                url: 'AddToCartServlet',
+                type: 'POST',
+                data: {
+                    pid: 4, // Correct PID for Toblerone
+                    quantity: quantity
+                },
+                success: function(response) {
+                    if(response.trim() === 'success') {
+                        alert('Added to cart!');
+                        updateCartBadge();
+                    } else {
+                        alert('Error: ' + response);
+                        if(response.includes('login')) {
+                            window.location.href = 'login.jsp';
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    alert('Failed to add to cart');
+                }
+            });
+        });
+
+        function updateCartBadge() {
+            $.ajax({
+                url: 'GetCartCountServlet',
+                type: 'GET',
+                success: function(count) {
+                    $('.cart-badge').text(count);
+                },
+                error: function() {
+                    console.log('Error updating cart count');
+                }
+            });
+        }
+        
+        updateCartBadge();
+    });
+</script>
 </body>
 
 </html> 

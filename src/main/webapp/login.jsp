@@ -30,6 +30,7 @@
                     session.setAttribute("user", email);
                     session.setAttribute("fname", rs.getString("fname"));
                     session.setAttribute("lname", rs.getString("lname"));
+                    session.setAttribute("id", rs.getInt("id"));                    
                     response.sendRedirect("index.jsp"); // or home.jsp
                     return;
                 } else {

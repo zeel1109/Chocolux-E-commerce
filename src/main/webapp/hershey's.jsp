@@ -713,13 +713,13 @@
         <div class="row">
           <div class="col-lg-6" data-aos="fade-right">
             <div class="product-image">
-              <img src="images/Hersheys.png" alt="Hershey's" class="img-fluid">
+             <img src="uploads/1745592062118_Hersheys.png" alt="Hershey's" class="img-fluid">
             </div>
           </div>
           <div class="col-lg-6" data-aos="fade-left">
             <div class="product-info">
               <h2>Hershey's Milk Chocolate</h2>
-              <div class="product-price">&#8377;50.0</div>
+              <div class="product-price">&#8377;70.0</div>
               <div class="product-description">
                 <p>Experience the classic taste of Hershey's Milk Chocolate, made with fresh milk and premium cocoa beans. This iconic chocolate bar has been a favorite for generations, offering a perfect balance of sweetness and rich chocolate flavor.</p>
                 <p>Each bar is individually wrapped for freshness and convenience, making it the perfect snack or gift for any chocolate lover.</p>
@@ -739,7 +739,7 @@
               <div class="product-meta">
                 <p><span>Brand:</span> Hershey's</p>
                 <p><span>Category:</span> Milk Chocolate</p>
-                <p><span>Weight:</span> 100g</p>
+                <p><span>Weight:</span> 40g</p>
                 <p><span>Availability:</span> In Stock</p>
               </div>
             </div>
@@ -947,51 +947,76 @@
   <!-- AOS Animation Library -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Initialize AOS
+    // Initialize AOS first
     AOS.init({
       duration: 1000,
       easing: 'ease-in-out',
       once: false,
       mirror: true
     });
-    
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
 
-    // Quantity selector functionality
+    // Quantity control
     document.addEventListener('DOMContentLoaded', function() {
-      const quantityBtns = document.querySelectorAll('.quantity-btn');
-      quantityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const input = this.parentElement.querySelector('.quantity-input');
-          let value = parseInt(input.value);
-          
-          if (this.textContent === '+') {
-            value++;
-          } else if (this.textContent === '-' && value > 1) {
-            value--;
-          }
-          
-          input.value = value;
+        const minusBtn = document.querySelector('.quantity-control .quantity-btn:first-child');
+        const plusBtn = document.querySelector('.quantity-control .quantity-btn:last-child');
+        const qtyInput = document.querySelector('.quantity-control .quantity-input');
+
+        if (minusBtn && plusBtn && qtyInput) {
+            minusBtn.addEventListener('click', () => {
+                let qty = parseInt(qtyInput.value);
+                if (qty > 1) qtyInput.value = qty - 1;
+            });
+
+            plusBtn.addEventListener('click', () => {
+                let qty = parseInt(qtyInput.value);
+                qtyInput.value = qty + 1;
+            });
+        }
+
+        // Cart functionality
+        $(document).ready(function() {
+            $('.add-to-cart-btn').click(function() {
+                const quantity = parseInt($('.quantity-input').val());
+                
+                $.ajax({
+                    url: 'AddToCartServlet',
+                    type: 'POST',
+                    data: {
+                        pid: 3, // Correct PID for Hershey's
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        if(response.trim() === 'success') {
+                            alert('Added to cart!');
+                            updateCartBadge();
+                        } else {
+                            alert('Error: ' + response);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                        alert('Failed to add to cart');
+                    }
+                });
+            });
+
+            function updateCartBadge() {
+                $.ajax({
+                    url: 'GetCartCountServlet',
+                    type: 'GET',
+                    success: function(count) {
+                        $('.cart-badge').text(count);
+                    },
+                    error: function() {
+                        console.log('Error updating cart count');
+                    }
+                });
+            }
+            
+            updateCartBadge();
         });
-      });
     });
-  </script>
+</script>
 
 </body>
 

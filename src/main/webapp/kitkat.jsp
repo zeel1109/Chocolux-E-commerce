@@ -679,10 +679,10 @@
               </ul>
              <div class="quote_btn-container">
 			  <%
-			    String fname = (String) session.getAttribute("fname");
+			  String fname = (String) session.getAttribute("fname");
 			    String lname = (String) session.getAttribute("lname");
-			
-			    if (fname != null && lname != null) {
+
+			    if (fname != null && lname != null && !fname.isEmpty() && !lname.isEmpty()) {
 			  %>
 			    <!-- Show full name -->
 			    <span style="color: brown; font-weight: bold; margin-right: 15px;">
@@ -695,9 +695,9 @@
                 </li>
                 </ul>
                  <a class="chocolate-pulse" href="cart.jsp">
-                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                  <span class="cart-badge">0</span>
-                </a>
+  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+  <span class="cart-badge">0</span> <!-- This is important -->
+</a>
 			  <%
 			    }
 			  %>
@@ -985,25 +985,99 @@
       });
     });
 
-    // Quantity selector functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const quantityBtns = document.querySelectorAll('.quantity-btn');
-      quantityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const input = this.parentElement.querySelector('.quantity-input');
-          let value = parseInt(input.value);
-          
-          if (this.textContent === '+') {
-            value++;
-          } else if (this.textContent === '-' && value > 1) {
-            value--;
-          }
-          
-          input.value = value;
+    $(document).ready(function() {
+        // Quantity selector functionality
+        $('.quantity-btn').click(function() {
+            const input = $(this).siblings('.quantity-input');
+            let value = parseInt(input.val());
+            
+            if ($(this).text() === '+') {
+                value++;
+            } else if ($(this).text() === '-' && value > 1) {
+                value--;
+            }
+            
+            input.val(value);
         });
-      });
+        
+        // Add to cart button functionality
+       $('.add-to-cart-btn').click(function() {
+    const quantity = parseInt($('.quantity-input').val());
+    
+    console.log("Attempting to add to cart...");
+    
+    $.ajax({
+        url: 'AddToCartServlet',
+        type: 'POST',
+        data: {
+            pid: 7, // Your product ID
+            quantity: quantity
+        },
+        success: function(response) {
+            console.log("Server response:", response);
+            if(response.trim() === 'success') {
+                alert('Product added to cart successfully!');
+                updateCartBadge();
+            } else {
+                // More detailed error handling
+                if(response.includes('Not logged in')) {
+                    console.error("Session appears invalid despite being logged in");
+                    console.log("Current session attributes:", {
+                        id: '<%= session.getAttribute("id") %>',
+                        fname: '<%= session.getAttribute("fname") %>'
+                    });
+                    
+                    // Option 1: Force page refresh to sync session
+                    if(confirm('Session issue detected. Refresh page?')) {
+                        location.reload();
+                    }
+                } else {
+                    alert('Error: ' + response);
+                }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX Error:", status, error);
+            alert('Connection error. Please try again.');
+        }
     });
-  </script>
+});
+        
+        // Function to update cart badge
+        function updateCartBadge() {
+            $.ajax({
+                url: 'GetCartCountServlet',
+                type: 'GET',
+                success: function(count) {
+                    $('.cart-badge').text(count);
+                },
+                error: function() {
+                    console.log('Error updating cart count');
+                }
+            });
+        }
+        
+        // Initialize cart badge on page load
+        updateCartBadge();
+    });
+    </script>
+    <!-- Add this script at the bottom of kitkat.jsp, before the closing </body> tag -->
+  <script>
+const minusBtn = document.querySelector('.quantity-control .quantity-btn:first-child');
+const plusBtn = document.querySelector('.quantity-control .quantity-btn:last-child');
+const qtyInput = document.querySelector('.quantity-control .quantity-input');
+
+minusBtn.addEventListener('click', () => {
+    let qty = parseInt(qtyInput.value);
+    if (qty > 1) qtyInput.value = qty - 1;
+});
+
+plusBtn.addEventListener('click', () => {
+    let qty = parseInt(qtyInput.value);
+    qtyInput.value = qty + 1;
+});
+</script>
+  
 
 </body>
 

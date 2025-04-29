@@ -14,7 +14,7 @@
   <meta name="description" content="Discover the premium Toblerone chocolates collection at ChocoLux" />
   <meta name="author" content="" />
 
-  <title>Toblerone - ChocoLux</title>
+  <title>Crunch- ChocoLux</title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -368,7 +368,7 @@
 
     /* Product page specific styles */
     .product-hero {
-      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/images-3.jpeg');
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/New-Crunch-logo_web.jpg');
       background-size: cover;
       background-position: center;
       height: 400px;
@@ -702,8 +702,8 @@
     <!-- product hero section -->
     <section class="product-hero">
       <div class="container">
-        <h1 data-aos="fade-up">Toblerone</h1>
-        <p data-aos="fade-up" data-aos-delay="200">Discover our premium collection of Toblerone chocolates, the iconic Swiss chocolate with honey and almond nougat.</p>
+        <h1 data-aos="fade-up">Crunch</h1>
+        <p data-aos="fade-up" data-aos-delay="200">CRUNCH is a chocolate bar made of milk chocolate and crisped rice first introduced in 1938. It is produced globally by Nestlé with the exception of the United States</p>
       </div>
     </section>
     <!-- end product hero section -->
@@ -714,16 +714,16 @@
         <div class="row">
           <div class="col-lg-6" data-aos="fade-right">
             <div class="product-image">
-              <img src="images/Toblerone.png" alt="Toblerone" class="img-fluid">
+              <img src="images/BUNCHA-CRUNCH-3.png" alt="Toblerone" class="img-fluid">
             </div>
           </div>
           <div class="col-lg-6" data-aos="fade-left">
             <div class="product-info">
-              <h2>Toblerone</h2>
-              <div class="product-price">&#8377;250.00</div>
+              <h2>Crunch</h2>
+              <div class="product-price">&#8377;711.00</div>
               <div class="product-description">
-                <p>Experience the unique taste of Toblerone, a Swiss chocolate bar with a distinctive triangular shape. Made with milk chocolate, honey, and almond nougat, each piece offers a perfect balance of sweetness and crunch.</p>
-                <p>The iconic triangular shape represents the Matterhorn mountain in the Swiss Alps, making it not just a delicious treat but also a piece of Swiss heritage.</p>
+                <p>CRUNCH is a chocolate bar made of milk chocolate and crisped rice first introduced in 1938. It is produced globally by Nestlé with the exception of the United States, where it is produced under license by the Ferrara Candy Company, a subsidiary of Ferrero.</p>
+                <p>The CRUNCH Chocolate Bar is now available in a larger size – perfect for sharing amongst family and friends, or enjoying all to yourself! It's so easy to break off a chocolate square piece. </p>
               </div>
               <div class="quantity-selector">
                 <label>Quantity:</label>
@@ -738,8 +738,8 @@
                 <button class="buy-now-btn">Buy Now</button>
               </div>
               <div class="product-meta">
-                <p><span>Brand:</span> Toblerone</p>
-                <p><span>Category:</span> Milk Chocolate with Honey and Almond Nougat</p>
+                <p><span>Brand:</span> Crunch</p>
+                <p><span>Category:</span> Milk Dark Chocolate</p>
                 <p><span>Weight:</span> 100g</p>
                 <p><span>Availability:</span> In Stock</p>
               </div>
@@ -755,21 +755,21 @@
       <div class="container">
         <div class="heading_container" data-aos="fade-up">
           <h2>
-            More Toblerone Products
+            More Crunch Products
           </h2>
           <p>
-            Discover our other premium Toblerone chocolate collections
+            Discover our other premium Crunch chocolate collections
           </p>
         </div>
         <div class="row">
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
             <div class="related-product-card">
               <div class="related-product-img">
-                <img src="images/Toblerone-dark.jpg" alt="Toblerone Dark">
+                <img src="images/package-crunch-assorted-halloween-80ct-SUB.png" alt="Toblerone Dark">
               </div>
               <div class="related-product-info">
-                <h4>Toblerone Dark</h4>
-                <div class="related-product-price">&#8377;200</div>
+                <h4>Crunch Halloween Light</h4>
+                <div class="related-product-price">&#8377;400</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>
@@ -777,11 +777,11 @@
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
             <div class="related-product-card">
               <div class="related-product-img">
-                <img src="images/Toblerone-white.jpg" alt="Toblerone White">
+                <img src="images/package-crunch-assorted-halloween-45ct-LDB.png" alt="Toblerone White">
               </div>
               <div class="related-product-info">
-                <h4>Toblerone White</h4>
-                <div class="related-product-price">&#8377;190</div>
+                <h4>Crunch Halloween Dark</h4>
+                <div class="related-product-price">&#8377;590</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>
@@ -789,11 +789,11 @@
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
             <div class="related-product-card">
               <div class="related-product-img">
-                <img src="images/Box-Toblerone.jpg" alt="Toblerone Gift Box">
+                <img src="images/CRUNCH-MINIS-10.png" alt="Toblerone Gift Box">
               </div>
               <div class="related-product-info">
-                <h4>Toblerone Gift Box</h4>
-                <div class="related-product-price">&#8377;220</div>
+                <h4>Crunch Mini</h4>
+                <div class="related-product-price">&#8377;820</div>
                 <a href="#" class="view-product-btn">View Product</a>
               </div>
             </div>
@@ -948,51 +948,88 @@
   <!-- AOS Animation Library -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Initialize AOS
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: false,
-      mirror: true
-    });
-    
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-
-    // Quantity selector functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const quantityBtns = document.querySelectorAll('.quantity-btn');
-      quantityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const input = this.parentElement.querySelector('.quantity-input');
-          let value = parseInt(input.value);
-          
-          if (this.textContent === '+') {
-            value++;
-          } else if (this.textContent === '-' && value > 1) {
-            value--;
-          }
-          
-          input.value = value;
+    // Initialize AOS first
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: false,
+            mirror: true
         });
-      });
+    }
+
+    // Quantity control
+    $(document).ready(function() {
+        // Smooth scroll
+        $('a[href^="#"]').on('click', function(e) {
+            e.preventDefault();
+            const target = $(this.getAttribute('href'));
+            if (target.length) {
+                $('html, body').stop().animate({
+                    scrollTop: target.offset().top - 80
+                }, 1000);
+            }
+        });
+
+        // Quantity buttons
+        $('.quantity-btn').on('click', function() {
+            const input = $(this).siblings('.quantity-input');
+            let value = parseInt(input.val());
+            
+            if ($(this).text() === '+') {
+                value++;
+            } else if ($(this).text() === '-' && value > 1) {
+                value--;
+            }
+            
+            input.val(value);
+        });
+
+        // Add to cart
+        $('.add-to-cart-btn').on('click', function() {
+            const quantity = parseInt($('.quantity-input').val());
+            
+            $.ajax({
+                url: 'AddToCartServlet',
+                type: 'POST',
+                data: {
+                    pid: 9, // Correct PID for Toblerone
+                    quantity: quantity
+                },
+                success: function(response) {
+                    if(response.trim() === 'success') {
+                        alert('Added to cart!');
+                        updateCartBadge();
+                    } else {
+                        alert('Error: ' + response);
+                        if(response.includes('login')) {
+                            window.location.href = 'login.jsp';
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    alert('Failed to add to cart');
+                }
+            });
+        });
+
+        function updateCartBadge() {
+            $.ajax({
+                url: 'GetCartCountServlet',
+                type: 'GET',
+                success: function(count) {
+                    $('.cart-badge').text(count);
+                },
+                error: function() {
+                    console.log('Error updating cart count');
+                }
+            });
+        }
+        
+        updateCartBadge();
     });
-  </script>
+</script>
 
 </body>
 

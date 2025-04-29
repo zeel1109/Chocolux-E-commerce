@@ -473,7 +473,13 @@ if (error != null) { %>
     <!-- Main Content -->
     <div class="main-content">
         <h1 class="page-title">Products Management</h1>
-        
+        <%@ page import="java.sql.*, java.util.*" %>
+<%!
+    // Helper function to format price with Rupee symbol
+    public String formatPrice(double price) {
+        return "₹" + String.format("%.2f", price);
+    }
+%>
         <%
         // Get all brands from DB
         List<String[]> brands = new ArrayList<>();
@@ -511,9 +517,9 @@ if (error != null) { %>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="productPrice" class="form-label">Price</label>
-                    <input type="number" step="0.01" class="form-control" id="productPrice" name="price" required>
-                </div>
+    <label for="productPrice" class="form-label">Price (in ₹)</label>
+    <input type="number" step="0.01" class="form-control" id="productPrice" name="price" required>
+</div>
                 <div class="col-md-6">
                     <label for="productStock" class="form-label">Stock</label>
                     <input type="number" class="form-control" id="productStock" name="quantity" required>
@@ -587,7 +593,7 @@ if (error != null) { %>
                             <td><%= rs.getString("pname") %></td>
                             <td><%= rs.getString("bname") != null ? rs.getString("bname") : "N/A" %></td>
                             <td><%= rs.getString("description") %></td>
-                            <td>$<%= String.format("%.2f", rs.getDouble("price")) %></td>
+                            <td><%= formatPrice(rs.getDouble("price")) %></td>
                             <td><%= rs.getString("weight") %></td>
                             <td><%= rs.getInt("quantity") %></td>
                             <td>
