@@ -785,7 +785,7 @@
             </button>
           </div>
         </div>
-        <div class="col-lg-4">
+       <div class="col-lg-4">
           <div class="cart-summary" data-aos="fade-left">
             <h3>Order Summary</h3>
             <div class="summary-item">
@@ -804,9 +804,12 @@
               <span>Total</span>
               <span>&#8377;<%= String.format("%.2f", total) %></span>
             </div>
-            <button class="checkout-btn">
-              Proceed to Checkout
-            </button>
+            <form action="CartTotal.jsp" method="post" onsubmit="return validateCart()">
+  <input type="hidden" name="id" value="<%= session.getAttribute("id") %>">
+  <button type="submit" class="checkout-btn">
+    Proceed to Checkout
+  </button>
+</form>
   <%
       } else {
   %>
@@ -1055,6 +1058,24 @@ function updateCartBadge() {
         }
     });
 }
+</script>
+<script>
+function validateCart() {
+    // You could add client-side validation here
+    // For example, check if cart is not empty
+    return true; // Return false to prevent submission if validation fails
+}
+</script>
+<script>
+// Client-side validation
+document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    const cartItems = document.querySelectorAll('.cart-table tbody tr');
+    if(cartItems.length === 0) {
+        e.preventDefault();
+        alert('Your cart is empty. Please add items before checkout.');
+        window.location.href = 'chocolate.jsp';
+    }
+});
 </script>
 </body>
 
